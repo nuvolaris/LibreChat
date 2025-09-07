@@ -3,6 +3,7 @@
 
 services:
   api:
+    #command: sleep infinity
     container_name: LibreChat
     ports:
       - "${PORT}:${PORT}"
@@ -22,11 +23,15 @@ services:
       - RAG_API_URL=http://rag_api:${RAG_PORT:-8000}
     volumes:
       - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
+      - type: bind
         source: ./.env
         target: /app/.env
       - ./images:/app/client/public/images
       - ./uploads:/app/uploads
       - ./logs:/app/api/logs
+      - ./logs2:/app/logs
   mongodb:
     container_name: chat-mongodb
     image: mongo

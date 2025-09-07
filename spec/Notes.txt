@@ -1,0 +1,23 @@
+start with:
+
+cp .env.example .env
+cp librechat.example.yaml librechat.yaml
+echo UID=$(id -u) >> .env
+echo GID=$(id -g) >> .env
+FIX! add 
+   ./logs2:/app/logs to volumes
+
+---
+starting step by step:
+
+docker ps -aq | xargs docker rm -f
+docker compose up vectordb -d
+docker compose up rag_api -d
+docker compose up meilisearch -d
+docker compose up mongodb -d
+
+rm -Rvf logs images uploads
+mkdir logs images uploads
+chmod 777 logs images uploads
+docker compose up api 
+
